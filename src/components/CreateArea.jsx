@@ -1,21 +1,35 @@
 import React,{useState} from "react";
 
-function CreateArea() {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  
+function CreateArea(props) {
+  const [input, setInput] = useState({
+    title: "",
+    content: ""
+  });
+
   function handleChange(event){
     const {value, name} = event.target;
-    console.log(event.target)
+    setInput(preInput => {
+      return {
+        ...preInput,
+        [name]: value
+      }
+    })
   }
-  function handleAdd(){
-
+  function handleAdd(event){
+      event.preventDefault()
+      props.addItem(input)
+      setInput(preInput =>{
+        return {
+          title: "",
+          content: ""
+        }
+      })
   }
   return (
     <div>
       <form>
-        <input onChange={handleChange} name="title" placeholder="Title" />
-        <textarea onChange={handleChange} name="content" placeholder="Take a note..." rows="3" />
+        <input onChange={handleChange} name="title" placeholder="Title" value={input.title} />
+        <textarea onChange={handleChange} name="content" placeholder="Take a note..." rows="3" value={input.content} />
         <button onClick={handleAdd}>Add</button>
       </form>
     </div>
